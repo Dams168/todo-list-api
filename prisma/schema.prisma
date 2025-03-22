@@ -16,8 +16,9 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique @db.VarChar(100)
-  name      String  @db.VarChar(100)
-  password  String  @db.VarChar(255)
+  name      String   @db.VarChar(100)
+  password  String   @db.VarChar(255)
+  token     String?  @db.VarChar(255)
 
   todos     Todos[]
   @@map("users")
