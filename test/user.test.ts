@@ -3,13 +3,13 @@ import { app } from "../src/application/app";
 import { logger } from "../src/application/logging";
 import { UserTest } from "./test-util";
 
-describe("POST /api/user", () => {
+describe("POST /register", () => {
   afterEach(async () => {
     await UserTest.delete();
   });
 
   it("should reject register user if request is invalid", async () => {
-    const response = await supertest(app).post("/api/users").send({
+    const response = await supertest(app).post("/register").send({
       email: "",
       password: "",
       name: "",
@@ -21,7 +21,7 @@ describe("POST /api/user", () => {
   });
 
   it("should accepted register when request is valid", async () => {
-    const response = await supertest(app).post("/api/users").send({
+    const response = await supertest(app).post("/register").send({
       email: "test@mail.com",
       password: "test",
       name: "test",
@@ -34,7 +34,7 @@ describe("POST /api/user", () => {
   });
 });
 
-describe("POST /api/user/login", () => {
+describe("POST /login", () => {
   beforeEach(async () => {
     await UserTest.create();
   });
@@ -43,7 +43,7 @@ describe("POST /api/user/login", () => {
   });
 
   it("should reject login when email is not found", async () => {
-    const response = await supertest(app).post("/api/users/login").send({
+    const response = await supertest(app).post("/login").send({
       email: "salah@mail.com",
       password: "test",
     });
@@ -54,7 +54,7 @@ describe("POST /api/user/login", () => {
   });
 
   it("should reject login when password is wrong", async () => {
-    const response = await supertest(app).post("/api/users/login").send({
+    const response = await supertest(app).post("/login").send({
       email: "test@mail.com",
       password: "salah",
     });
@@ -65,7 +65,7 @@ describe("POST /api/user/login", () => {
   });
 
   it("should able to login", async () => {
-    const response = await supertest(app).post("/api/users/login").send({
+    const response = await supertest(app).post("/login").send({
       email: "test@mail.com",
       password: "password",
     });
