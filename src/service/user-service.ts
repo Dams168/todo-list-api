@@ -31,10 +31,18 @@ export class userService {
     registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
 
     const user = await prismaClient.user.create({
-      data: registerRequest,
+      data: {
+        name: registerRequest.name,
+        email: registerRequest.email,
+        password: registerRequest.password,
+        token: uuid(),
+      },
     });
 
-    return toUserResponse(user);
+    // return toUserResponse(user);
+    const response = toUserResponse(user);
+    response.token = user.token!;
+    return response;
   }
 
   static async login(request: loginUserRequest): Promise<userResponse> {

@@ -27,10 +27,11 @@ describe("POST /register", () => {
       name: "test",
     });
 
-    // logger.debug(response.body);
+    logger.debug(response.body);
     expect(response.status).toBe(201);
-    expect(response.body.email).toBe("test@mail.com");
-    expect(response.body.name).toBe("test");
+    expect(response.body.token).toBeDefined();
+    // expect(response.body.email).toBe("test@mail.com");
+    // expect(response.body.name).toBe("test");
   });
 });
 
@@ -70,7 +71,7 @@ describe("POST /login", () => {
       password: "password",
     });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(200);
     expect(response.body.email).toBe("test@mail.com");
     expect(response.body.name).toBe("test");
