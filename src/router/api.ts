@@ -7,3 +7,4 @@ apiRouter.use(authMiddleware);
 
 //TODO API
 apiRouter.post("/todos", TodoController.create);
+apiRouter.put("/todos/:todoId(\\d+)", TodoController.update);

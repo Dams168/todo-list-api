@@ -5,4 +5,10 @@ export class TodoValidation {
     title: z.string().min(1).max(100),
     description: z.string().min(1).max(255),
   });
+
+  static readonly UPDATE: ZodType = z.object({
+    id: z.number().int().positive(),
+    title: z.string().min(1).max(100).optional(),
+    description: z.string().min(1).max(255).optional(),
+  });
 }
