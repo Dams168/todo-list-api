@@ -25,7 +25,7 @@ model User {
 }
 
 model Todos {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   title     String @db.VarChar(100)
   description String  @db.VarChar(255)
   userId    String
