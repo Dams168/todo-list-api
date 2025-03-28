@@ -1,6 +1,7 @@
 import { Todos, User } from "@prisma/client";
 import {
   createTodoRequest,
+  deleteTodoRequest,
   todoResponse,
   toTodoResponse,
   updateTodoRequest,
@@ -62,6 +63,22 @@ export class todoService {
         id: updateRequest.id,
       },
       data: updateRequest,
+    });
+
+    return toTodoResponse(todo);
+  }
+
+  static async delete(
+    user: User,
+    request: deleteTodoRequest
+  ): Promise<todoResponse> {
+    const updateRequest = Validation.validate(TodoValidation.GET, request);
+    await this.checkTodoMustExist(user.id, updateRequest.id);
+
+    const todo = await prismaClient.todos.delete({
+      where: {
+        id: updateRequest.id,
+      },
     });
 
     return toTodoResponse(todo);

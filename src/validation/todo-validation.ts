@@ -11,4 +11,8 @@ export class TodoValidation {
     title: z.string().min(1).max(100).optional(),
     description: z.string().min(1).max(255).optional(),
   });
+
+  static readonly GET: ZodType = z.object({
+    id: z.number().int().positive(),
+  });
 }

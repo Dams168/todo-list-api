@@ -17,6 +17,10 @@ export type updateTodoRequest = {
   description?: string;
 };
 
+export type deleteTodoRequest = {
+  id: number;
+};
+
 export function toTodoResponse(todo: Todos): todoResponse {
   return {
     id: todo.id,
