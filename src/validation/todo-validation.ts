@@ -15,4 +15,9 @@ export class TodoValidation {
   static readonly GET: ZodType = z.object({
     id: z.number().int().positive(),
   });
+
+  static readonly GETALL: ZodType = z.object({
+    page: z.number().int().positive(),
+    limit: z.number().int().positive(),
+  });
 }

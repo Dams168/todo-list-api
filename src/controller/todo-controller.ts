@@ -3,6 +3,7 @@ import { UserRequest } from "../type/user-request";
 import {
   createTodoRequest,
   deleteTodoRequest,
+  getAllTodoRequest,
   updateTodoRequest,
 } from "../model/todo-model";
 import { todoService } from "../service/todo-service";
@@ -37,7 +38,20 @@ export class TodoController {
       const request: deleteTodoRequest = req.body as deleteTodoRequest;
       request.id = parseInt(req.params.todoId);
       const response = await todoService.delete(req.user!, request);
-      res.status(204).json({ response });
+      res.status(204).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async getAll(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const request: getAllTodoRequest = {
+        page: parseInt(req.query.page as string) || 1,
+        limit: parseInt(req.query.limit as string) || 10,
+      };
+      const response = await todoService.getAll(request);
+      res.status(200).json(response);
     } catch (e) {
       next(e);
     }

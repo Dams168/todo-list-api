@@ -21,6 +21,11 @@ export type deleteTodoRequest = {
   id: number;
 };
 
+export type getAllTodoRequest = {
+  page: number;
+  limit: number;
+};
+
 export function toTodoResponse(todo: Todos): todoResponse {
   return {
     id: todo.id,

@@ -2,6 +2,7 @@ import { Todos, User } from "@prisma/client";
 import {
   createTodoRequest,
   deleteTodoRequest,
+  getAllTodoRequest,
   todoResponse,
   toTodoResponse,
   updateTodoRequest,
@@ -11,6 +12,8 @@ import { TodoValidation } from "../validation/todo-validation";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 import { logger } from "../application/logging";
+import { Pageable } from "../model/page";
+import { request } from "express";
 
 export class todoService {
   static async create(
@@ -72,15 +75,44 @@ export class todoService {
     user: User,
     request: deleteTodoRequest
   ): Promise<todoResponse> {
-    const updateRequest = Validation.validate(TodoValidation.GET, request);
-    await this.checkTodoMustExist(user.id, updateRequest.id);
+    const deleteRequest = Validation.validate(TodoValidation.GET, request);
+    await this.checkTodoMustExist(user.id, deleteRequest.id);
 
     const todo = await prismaClient.todos.delete({
       where: {
-        id: updateRequest.id,
+        id: deleteRequest.id,
       },
     });
 
     return toTodoResponse(todo);
+  }
+
+  static async getAll(
+    request: getAllTodoRequest
+  ): Promise<Pageable<todoResponse>> {
+    const getAllRequest = Validation.validate(TodoValidation.GETALL, request);
+    const skip = (getAllRequest.page - 1) * getAllRequest.limit;
+
+    const todos = await prismaClient.todos.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        userId: true,
+      },
+      take: getAllRequest.limit,
+      skip: skip,
+    });
+
+    const total = await prismaClient.todos.count();
+
+    return {
+      data: todos.map((todo) => toTodoResponse(todo)),
+      paging: {
+        page: getAllRequest.page,
+        limit: getAllRequest.limit,
+        total: total,
+      },
+    };
   }
 }
