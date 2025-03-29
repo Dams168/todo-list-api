@@ -5,3 +5,6 @@ export const publicRouter = express.Router();
 
 publicRouter.post("/register", UserController.register);
 publicRouter.post("/login", UserController.login);
+publicRouter.get("/", (req, res) => {
+  res.json("HELLO WORLD!");
+});

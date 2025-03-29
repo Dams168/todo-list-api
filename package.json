@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
+    "postinstall": "prisma generate",
     "build": "tsc",
     "start": "node dist/main.js"
   },
